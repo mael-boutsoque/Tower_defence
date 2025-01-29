@@ -1,5 +1,6 @@
 import pygame
 from menu import Menu
+from entity import Entity
 
 class Game():
     def __init__(self, width, height):
@@ -14,6 +15,7 @@ class Game():
     
     def run(self):
         self.menu = Menu(self.width*(1-0.2),0,self.width*0.2,self.height,[])
+        self.entitee = Entity(500,500,100,100)
         self.loop()
     
     
@@ -33,3 +35,4 @@ class Game():
     def draw(self):
         self.display.fill((0,0,0))
         self.menu.draw(self.display)
+        self.entitee.draw(self.display)
