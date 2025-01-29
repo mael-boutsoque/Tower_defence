@@ -9,6 +9,13 @@ class Menu:
     
     def draw(self,display):
         draw.rect(display,self.color,self.rect)
+        for i in range(len(self.items)):
+            item = self.items[i]
+            item.draw_item(display,
+                            x = self.x + self.width*0.1,
+                            y = self.y + self.height*0.1 + i*(self.width*0.8+self.width*0.1) ,
+                            width = self.width*0.8,
+                            height = self.width*0.8)
     
     def move(self,x=0,y=0,width=0,height=0):
         self.x = x

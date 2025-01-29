@@ -14,7 +14,7 @@ class Game():
         self.fps = 60
     
     def run(self):
-        self.menu = Menu(self.width*(1-0.2),0,self.width*0.2,self.height,[])
+        self.menu = Menu(self.width*(1-0.2),0,self.width*0.2,self.height,[Entity,Entity])
         self.entitee = Entity(500,500,100,100)
         self.loop()
     
