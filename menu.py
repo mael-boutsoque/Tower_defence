@@ -5,7 +5,7 @@ class Menu:
     def __init__(self,x:int,y:int,width:int,height:int,items:list):
         self.items = items
         self.move(x,y,width,height)
-        self.color = (60,150,90)
+        self.color = (90,70,150)
         self.scroll = 0
     
     def draw(self,display):
@@ -27,7 +27,7 @@ class Menu:
     
     def events(self,event,mouse_pos):
         if(event.type == MOUSEWHEEL):
-            print(event.y)
+            print("event : menu scroll ->",event.y)
             self.scroll += event.y * 10
         
         elif(event.type == MOUSEBUTTONUP and (event.button!=4 and event.button!=5)):
@@ -39,5 +39,5 @@ class Menu:
                 
                 rect = Rect(x,y,width,height)
                 if(rect.collidepoint(mouse_pos)):
-                    self.items[i].events(event,mouse_pos)
+                    self.items[i].events_static(event,mouse_pos)
         

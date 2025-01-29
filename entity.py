@@ -28,5 +28,8 @@ class Entity:
         display.blit(Image,Rect(x,y,width,height))
     
     @staticmethod
-    def events(event,mouse_pos):
-        print("event : basic entity",event)
+    def events_static(event,mouse_pos):
+        print("event : basic entity ->",event)
+    
+    def events(self,event,mouse_pos):
+        print("event : basic entity ->",event)

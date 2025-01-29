@@ -1,4 +1,5 @@
 import pygame
+from map import Map
 from menu import Menu
 from entity import Entity
 
@@ -16,7 +17,8 @@ class Game():
     def run(self):
         menuwidth = min(140,self.width*0.2)
         self.menu = Menu(self.width-menuwidth,0,menuwidth,self.height,[Entity,Entity,Entity,Entity])
-        self.entitee = Entity(500,500,100,100)
+        self.map = Map(0,0,self.width-menuwidth,self.height,10,10)
+        self.map.place(Entity,100,100)
         self.loop()
     
     
@@ -39,8 +41,10 @@ class Game():
             mouse_pos = pygame.mouse.get_pos()
             if(self.menu.rect.collidepoint(mouse_pos)):
                 self.menu.events(event,mouse_pos)
+            elif(self.map.rect.collidepoint(mouse_pos)):
+                self.map.events(event,mouse_pos)
     
     def draw(self):
         self.display.fill((0,0,0))
         self.menu.draw(self.display)
-        self.entitee.draw(self.display)
+        self.map.draw(self.display)
