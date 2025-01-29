@@ -14,7 +14,8 @@ class Game():
         self.fps = 60
     
     def run(self):
-        self.menu = Menu(self.width*(1-0.2),0,self.width*0.2,self.height,[Entity,Entity])
+        menuwidth = min(140,self.width*0.2)
+        self.menu = Menu(self.width-menuwidth,0,menuwidth,self.height,[Entity,Entity,Entity,Entity])
         self.entitee = Entity(500,500,100,100)
         self.loop()
     
@@ -29,8 +30,15 @@ class Game():
     
     def events(self):
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+            if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key==27):
                 self.running = False
+            
+            if event.type == pygame.KEYDOWN:
+                print(event.key)
+            
+            mouse_pos = pygame.mouse.get_pos()
+            if(self.menu.rect.collidepoint(mouse_pos)):
+                self.menu.events(event,mouse_pos)
     
     def draw(self):
         self.display.fill((0,0,0))

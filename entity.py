@@ -26,3 +26,7 @@ class Entity:
         image_path = "images\\"+Entity.image
         Image = transform.scale(image.load(image_path),(width,height))
         display.blit(Image,Rect(x,y,width,height))
+    
+    @staticmethod
+    def events(event,mouse_pos):
+        print("event : basic entity",event)
