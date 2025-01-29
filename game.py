@@ -1,8 +1,11 @@
 import pygame
+from menu import Menu
 
 class Game():
     def __init__(self, width, height):
         pygame.init()
+        self.width = width
+        self.height = height
         self.display = pygame.display.set_mode((width,height))
         pygame.display.set_caption("Game")
         self.clock = pygame.time.Clock()
@@ -10,6 +13,7 @@ class Game():
         self.fps = 60
     
     def run(self):
+        self.menu = Menu(self.width*(1-0.2),0,self.width*0.2,self.height,[])
         self.loop()
     
     
@@ -28,4 +32,4 @@ class Game():
     
     def draw(self):
         self.display.fill((0,0,0))
-        pygame.draw.rect(self.display,(255,255,255),pygame.Rect(100,100,100,100))
+        self.menu.draw(self.display)
