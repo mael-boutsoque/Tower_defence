@@ -32,7 +32,7 @@ class Game():
     
     def events(self):
         for event in pygame.event.get():
-            if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key==27):
+            if event.type == pygame.QUIT:# or (event.type == pygame.KEYDOWN and event.key==27):
                 self.running = False
             
             if event.type == pygame.KEYDOWN:
@@ -40,9 +40,9 @@ class Game():
             
             mouse_pos = pygame.mouse.get_pos()
             if(self.menu.rect.collidepoint(mouse_pos)):
-                self.menu.events(event,mouse_pos,self.map)
+                self.menu.events(event,mouse_pos,map=self.map)
             elif(self.map.rect.collidepoint(mouse_pos)):
-                self.map.events(event,mouse_pos)
+                self.map.events(event,mouse_pos,menu=self.menu)
     
     def draw(self):
         self.display.fill((0,0,0))

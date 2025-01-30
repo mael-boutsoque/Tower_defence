@@ -1,4 +1,4 @@
-from pygame import draw, Rect, MOUSEWHEEL, MOUSEBUTTONUP
+from pygame import KEYDOWN, draw, Rect, MOUSEWHEEL, MOUSEBUTTONUP
 
 from entity import Entity
 
@@ -19,7 +19,8 @@ class Menu:
                             x = self.x + self.width*0.1,
                             y = self.y + i*self.width*0.8 + (i+1)*self.width*0.1 + self.scroll,
                             width = self.width*0.8,
-                            height = self.width*0.8)
+                            height = self.width*0.8,
+                            selected = i==self.selected)
     
     def move(self,x=0,y=0,width=0,height=0):
         self.x = x
@@ -29,6 +30,12 @@ class Menu:
         self.rect = Rect(self.x,self.y,self.width,self.height)
     
     def events(self,event,mouse_pos,map):
+        if(map.next_place is None):
+            self.selected = None
+        if(event.type == KEYDOWN):
+            if(event.key==27):
+                self.selected = None
+                map.next_place = None
         if(event.type == MOUSEWHEEL):
             print("event : menu scroll ->",event.y)
             self.scroll += event.y * 10
@@ -44,5 +51,4 @@ class Menu:
                 if(rect.collidepoint(mouse_pos)):
                     self.items[i].events_static(event,mouse_pos)
                     map.want_to_place(self.items[i])
-                    print(map)
-        
+                    self.selected = i        

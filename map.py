@@ -35,7 +35,7 @@ class Map:
                     self.liste[i][j].draw(display)
                 
     
-    def events(self,event,mouse_pos):
+    def events(self,event,mouse_pos,menu):
         id = int((mouse_pos[0]-self.x)//self.dx)
         jd = int((mouse_pos[1]-self.y)//self.dy)
         if (event.type == MOUSEBUTTONUP):
@@ -43,12 +43,18 @@ class Map:
             if(self.next_place is not None):
                 self.place_id(self.next_place,id,jd)
                 self.next_place = None
+                menu.selected = None
             
         elif (event.type == KEYDOWN):
             print(f"event : map[{id},{jd}] ->",event)
-            
-            dx=0
-            dy=0
+            if(event.type == KEYDOWN):
+                if(event.key==27):
+                    menu.selected = None
+                    if(not self.next_place is None):
+                        self.next_place = None
+                    else:
+                        self.deselect_all()
+    
             print(event.key)
             if(event.key==1073741903):
                 self.moves(1,0)
@@ -125,3 +131,9 @@ class Map:
             self.next_place = item
             return True
         return False
+    
+    def deselect_all(self):
+        for i in range(len(self.liste)):
+            for j in range(len(self.liste[i])):
+                if self.liste[i][j] is not None:
+                    self.liste[i][j].selected = False
