@@ -29,7 +29,12 @@ class Entity:
     
     @staticmethod
     def events_static(event,mouse_pos):
-        print("event : basic entity ->",event)
+        print("event : item entity ->",event)
     
     def events(self,event,mouse_pos):
         print("event : basic entity ->",event)
+    
+    def ___str___(self):
+        return f"Entity[pos = ({self.x},{self.y}) | size = ({self.width},{self.height})]"
+    def __repr__(self):
+        return self.___str___()

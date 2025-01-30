@@ -40,7 +40,7 @@ class Game():
             
             mouse_pos = pygame.mouse.get_pos()
             if(self.menu.rect.collidepoint(mouse_pos)):
-                self.menu.events(event,mouse_pos)
+                self.menu.events(event,mouse_pos,self.map)
             elif(self.map.rect.collidepoint(mouse_pos)):
                 self.map.events(event,mouse_pos)
     

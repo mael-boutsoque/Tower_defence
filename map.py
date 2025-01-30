@@ -6,6 +6,7 @@ class Map:
         self.ny = ny
         self.move(x,y,width,height)
         self.color = (60,150,90)
+        self.color_line = (50,140,80)
         self.create_liste()
     
     def move(self,x=0,y=0,width=0,height=0):
@@ -28,7 +29,7 @@ class Map:
         draw.rect(display,self.color,self.rect)
         for i in range(self.nx):
             for j in range(self.ny):
-                draw.rect(display,(0,0,0),Rect(i*self.dx,j*self.dy,self.dx,self.dy),width=2)
+                draw.rect(display,self.color_line,Rect(i*self.dx,j*self.dy,self.dx,self.dy),width=2)
                 
                 if (not self.liste[i][j] is None):
                     self.liste[i][j].draw(display)
@@ -51,4 +52,28 @@ class Map:
         jd = int((y-self.y)//self.dy)
         
         self.liste[id][jd] = item(x=self.x+id*self.dx,y=self.y+jd*self.dy,width=self.dx,height=self.dy,image=None)
-        print(self.liste)
+        print(self)
+    
+    def place_id(self,item,i,j):
+        self.liste[i][j] = item(x=self.x+i*self.dx,y=self.y+j*self.dy,width=self.dx,height=self.dy,image=None)
+        print(self)
+    
+    def place_on_free(self,item):
+        looping= True
+        for i in range(len(self.liste)):
+            for j in range(len(self.liste[i])):
+                if(self.liste[i][j] is None):
+                    self.place_id(item,i,j)
+                    looping = False
+                    break
+            if(not looping):
+                break
+    
+    def ___str___(self):
+        return self.liste.__str__()
+    def __repr__(self):
+        return self.___str___()
+    
+
+    def __getitem__(self,key):
+        return self.liste[key]

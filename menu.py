@@ -1,5 +1,7 @@
 from pygame import draw, Rect, MOUSEWHEEL, MOUSEBUTTONUP
 
+from entity import Entity
+
 
 class Menu:
     def __init__(self,x:int,y:int,width:int,height:int,items:list):
@@ -25,7 +27,7 @@ class Menu:
         self.height = height
         self.rect = Rect(self.x,self.y,self.width,self.height)
     
-    def events(self,event,mouse_pos):
+    def events(self,event,mouse_pos,map):
         if(event.type == MOUSEWHEEL):
             print("event : menu scroll ->",event.y)
             self.scroll += event.y * 10
@@ -40,4 +42,6 @@ class Menu:
                 rect = Rect(x,y,width,height)
                 if(rect.collidepoint(mouse_pos)):
                     self.items[i].events_static(event,mouse_pos)
+                    map.place_on_free(Entity)
+                    print(map)
         
