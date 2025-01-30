@@ -44,7 +44,7 @@ class Map:
             print(f"event : map[{id},{jd}] ->",event)
         
         if(not self.liste[id][jd] is None):
-            self.liste[id][jd].events(event,mouse_pos)
+            self.liste[id][jd].events(event,mouse_pos,self)
     
     
     def place(self,item:object,x,y):

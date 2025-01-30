@@ -1,4 +1,4 @@
-from pygame import Rect, image, transform
+from pygame import MOUSEBUTTONUP, Rect, image, transform, draw
 
 class Entity:
     image = "no_texture.png"
@@ -7,6 +7,7 @@ class Entity:
             self.image_path = "images\\"+Entity.image
         self.move(x,y,width,height)
         self.load_image(self.image_path)
+        self.selected = False
     
     def move(self,x=0,y=0,width=0,height=0):
         self.x = x
@@ -20,6 +21,8 @@ class Entity:
     
     def draw(self,display):
         display.blit(self.image,self.rect)
+        if(self.selected):
+            draw.rect(display,(250,200,200),self.rect,1)
     
     @staticmethod
     def draw_item(display,x:int,y:int,width:int,height:int):
@@ -31,8 +34,10 @@ class Entity:
     def events_static(event,mouse_pos):
         print("event : item entity ->",event)
     
-    def events(self,event,mouse_pos):
+    def events(self,event,mouse_pos,map):
         print("event : basic entity ->",event)
+        if(event.type == MOUSEBUTTONUP):
+            self.selected = not self.selected
     
     def ___str___(self):
         return f"Entity[pos = ({self.x},{self.y}) | size = ({self.width},{self.height})]"
