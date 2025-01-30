@@ -9,11 +9,11 @@ class Entity:
         self.load_image(self.image_path)
         self.selected = False
     
-    def move(self,x=0,y=0,width=0,height=0):
+    def move(self,x=0,y=0,width=None,height=None):
         self.x = x
         self.y = y
-        self.width = width
-        self.height = height
+        self.width = width or self.width
+        self.height = height or self.height
         self.rect = Rect(self.x,self.y,self.width,self.height)
     
     def load_image(self,image_path):
@@ -35,8 +35,8 @@ class Entity:
         print("event : item entity ->",event)
     
     def events(self,event,mouse_pos,map):
-        print("event : basic entity ->",event)
         if(event.type == MOUSEBUTTONUP):
+            print("event : basic entity(selected="+str(not self.selected)+") ->",event)
             self.selected = not self.selected
     
     def ___str___(self):

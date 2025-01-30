@@ -22,7 +22,6 @@ class Map:
         self.liste = []
         for i in range(self.ny):
             self.liste.append([None]*self.nx)
-        print(self.liste)
         
     
     def draw(self,display):
@@ -42,9 +41,22 @@ class Map:
             print(f"event : map[{id},{jd}] ->",event)
         elif (event.type == KEYDOWN):
             print(f"event : map[{id},{jd}] ->",event)
+            
+            dx=0
+            dy=0
+            print(event.key)
+            if(event.key==1073741903):
+                self.moves(1,0)
+            elif(event.key==1073741904):
+                self.moves(-1,0)
+            if(event.key==1073741905):
+                self.moves(0,1)
+            elif(event.key==1073741906):
+                self.moves(0,-1)
         
         if(not self.liste[id][jd] is None):
             self.liste[id][jd].events(event,mouse_pos,self)
+
     
     
     def place(self,item:object,x,y):
@@ -52,11 +64,9 @@ class Map:
         jd = int((y-self.y)//self.dy)
         
         self.liste[id][jd] = item(x=self.x+id*self.dx,y=self.y+jd*self.dy,width=self.dx,height=self.dy,image=None)
-        print(self)
     
     def place_id(self,item,i,j):
         self.liste[i][j] = item(x=self.x+i*self.dx,y=self.y+j*self.dy,width=self.dx,height=self.dy,image=None)
-        print(self)
     
     def place_on_free(self,item):
         looping= True
@@ -70,10 +80,37 @@ class Map:
                 break
     
     def ___str___(self):
-        return self.liste.__str__()
+        string = ""
+        for i in range(len(self.liste)):
+            string += self.liste[i].__str__()+"\n"
+        return string
     def __repr__(self):
         return self.___str___()
     
 
     def __getitem__(self,key):
         return self.liste[key]
+    
+    def moves(self, dx, dy):
+        if dx > 0:
+            range_i = range(len(self.liste) - 1, -1, -1)
+            range_j = range(len(self.liste[0]) - 1, -1, -1)
+        elif dx < 0:
+            range_i = range(len(self.liste))
+            range_j = range(len(self.liste[0]))
+        elif dy > 0:
+            range_i = range(len(self.liste) - 1, -1, -1)
+            range_j = range(len(self.liste[0]) - 1, -1, -1)
+        else:
+            range_i = range(len(self.liste))
+            range_j = range(len(self.liste[0]))
+
+        for i in range_i:
+            for j in range_j:
+                if self.liste[i][j] is not None and self.liste[i][j].selected:
+                    if 0 <= i + dx < len(self.liste) and 0 <= j + dy < len(self.liste[i]) and self.liste[i + dx][j + dy] is None:
+                        item = self.liste[i][j]
+                        self.liste[i + dx][j + dy] = item
+                        self.liste[i][j] = None
+                        item.move(self.x + (i + dx) * self.dx, self.y + (j + dy) * self.dy)
+        print(self)
