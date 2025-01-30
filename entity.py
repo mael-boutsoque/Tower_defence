@@ -25,10 +25,12 @@ class Entity:
             draw.rect(display,(250,200,200),self.rect,1)
     
     @staticmethod
-    def draw_item(display,x:int,y:int,width:int,height:int):
+    def draw_item(display,x:int,y:int,width:int,height:int,selected=False):
         image_path = "images\\"+Entity.image
         Image = transform.scale(image.load(image_path),(width,height))
         display.blit(Image,Rect(x,y,width,height))
+        if(selected):
+            draw.rect(display,(250,200,200),Rect(x,y,width,height),1)
     
     @staticmethod
     def events_static(event,mouse_pos):

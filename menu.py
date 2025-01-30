@@ -9,6 +9,7 @@ class Menu:
         self.move(x,y,width,height)
         self.color = (90,70,150)
         self.scroll = 0
+        self.selected = None
     
     def draw(self,display):
         draw.rect(display,self.color,self.rect)
@@ -42,6 +43,6 @@ class Menu:
                 rect = Rect(x,y,width,height)
                 if(rect.collidepoint(mouse_pos)):
                     self.items[i].events_static(event,mouse_pos)
-                    map.place_on_free(Entity)
+                    map.want_to_place(self.items[i])
                     print(map)
         

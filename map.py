@@ -8,6 +8,7 @@ class Map:
         self.color = (60,150,90)
         self.color_line = (50,140,80)
         self.create_liste()
+        self.next_place = None
     
     def move(self,x=0,y=0,width=0,height=0):
         self.x = x
@@ -39,6 +40,10 @@ class Map:
         jd = int((mouse_pos[1]-self.y)//self.dy)
         if (event.type == MOUSEBUTTONUP):
             print(f"event : map[{id},{jd}] ->",event)
+            if(self.next_place is not None):
+                self.place_id(self.next_place,id,jd)
+                self.next_place = None
+            
         elif (event.type == KEYDOWN):
             print(f"event : map[{id},{jd}] ->",event)
             
@@ -59,7 +64,7 @@ class Map:
 
     
     
-    def place(self,item:object,x,y):
+    def place_new(self,item:object,x,y):
         id = int((x-self.x)//self.dx)
         jd = int((y-self.y)//self.dy)
         
@@ -113,4 +118,10 @@ class Map:
                         self.liste[i + dx][j + dy] = item
                         self.liste[i][j] = None
                         item.move(self.x + (i + dx) * self.dx, self.y + (j + dy) * self.dy)
-        print(self)
+
+        
+    def want_to_place(self, item):
+        if self.next_place is None:
+            self.next_place = item
+            return True
+        return False
