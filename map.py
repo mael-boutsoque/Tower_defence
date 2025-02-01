@@ -65,7 +65,7 @@ class Map:
             elif(event.key==1073741906):
                 self.moves(0,-1)
         
-        if(not self.liste[id][jd] is None):
+        if(id<self.nx and jd<self.ny and not self.liste[id][jd] is None):
             self.liste[id][jd].events(event,mouse_pos,self)
 
     

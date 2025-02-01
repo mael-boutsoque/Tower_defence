@@ -2,6 +2,7 @@ import pygame
 from map import Map
 from menu import Menu
 from entity import Entity
+from upgrades import Upgrade
 
 class Game():
     def __init__(self, width, height):
@@ -16,7 +17,8 @@ class Game():
     
     def run(self):
         menuwidth = min(140,self.width*0.2)
-        self.menu = Menu(self.width-menuwidth,0,menuwidth,self.height,[Entity,Entity,Entity,Entity])
+        self.menu = Menu(self.width-menuwidth,0,menuwidth,self.height*0.6,[Entity,Entity,Entity,Entity])
+        self.upgrade = Upgrade(self.width-menuwidth,self.height*0.6,menuwidth,self.height*0.4)
         self.map = Map(0,0,self.width-menuwidth,self.height,10,10)
         self.map.place_new(Entity,100,100)
         self.loop()
@@ -43,8 +45,11 @@ class Game():
                 self.menu.events(event,mouse_pos,map=self.map)
             elif(self.map.rect.collidepoint(mouse_pos)):
                 self.map.events(event,mouse_pos,menu=self.menu)
+            elif(self.upgrade.rect.collidepoint(mouse_pos)):
+                self.map.events(event,mouse_pos,menu=self.menu)
     
     def draw(self):
         self.display.fill((0,0,0))
         self.menu.draw(self.display)
         self.map.draw(self.display)
+        self.upgrade.draw(self.display)

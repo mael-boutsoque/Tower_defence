@@ -15,12 +15,16 @@ class Menu:
         draw.rect(display,self.color,self.rect)
         for i in range(len(self.items)):
             item = self.items[i]
-            item.draw_item(display,
-                            x = self.x + self.width*0.1,
-                            y = self.y + i*self.width*0.8 + (i+1)*self.width*0.1 + self.scroll,
-                            width = self.width*0.8,
-                            height = self.width*0.8,
-                            selected = i==self.selected)
+            #check if item is in the menu display
+            x = self.x + self.width*0.1
+            y = self.y + i*self.width*0.8 + (i+1)*self.width*0.1 + self.scroll
+            if(y < self.y + self.height):
+                item.draw_item(display,
+                                x =x,
+                                y = y,
+                                width = self.width*0.8,
+                                height = self.width*0.8,
+                                selected = i==self.selected)
     
     def move(self,x=0,y=0,width=0,height=0):
         self.x = x
