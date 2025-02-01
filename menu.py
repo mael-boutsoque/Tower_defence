@@ -1,7 +1,5 @@
 from pygame import KEYDOWN, draw, Rect, MOUSEWHEEL, MOUSEBUTTONUP
 
-from entity import Entity
-
 
 class Menu:
     def __init__(self,x:int,y:int,width:int,height:int,items:list):
@@ -42,7 +40,8 @@ class Menu:
                 map.next_place = None
         if(event.type == MOUSEWHEEL):
             print("event : menu scroll ->",event.y)
-            self.scroll += event.y * 10
+            if(self.scroll + event.y * 10 <= 0 and self.scroll + event.y * 10 > self.height - (len(self.items)+1)*(self.width*0.9)):
+                self.scroll += event.y * 10
         
         elif(event.type == MOUSEBUTTONUP and (event.button!=4 and event.button!=5)):
             for i in range(len(self.items)):
