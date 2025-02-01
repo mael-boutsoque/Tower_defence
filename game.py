@@ -46,7 +46,7 @@ class Game():
             elif(self.map.rect.collidepoint(mouse_pos)):
                 self.map.events(event,mouse_pos,menu=self.menu)
             elif(self.upgrade.rect.collidepoint(mouse_pos)):
-                self.map.events(event,mouse_pos,menu=self.menu)
+                self.upgrade.events(event,mouse_pos,map=self.map)
     
     def draw(self):
         self.display.fill((0,0,0))
