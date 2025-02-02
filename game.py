@@ -14,6 +14,7 @@ class Game():
         self.clock = pygame.time.Clock()
         self.running = True
         self.fps = 60
+        pygame.font.init()
     
     def run(self):
         menuwidth = min(140,self.width*0.2)

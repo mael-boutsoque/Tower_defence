@@ -1,4 +1,4 @@
-from pygame import MOUSEBUTTONUP, Rect, transform, image, draw
+from pygame import MOUSEBUTTONUP, Rect, transform, image, draw, font
 
 
 class Button:
@@ -7,6 +7,10 @@ class Button:
         if(image is None):
             self.image_path = "images\\"+Button.image
         self.load_image(self.image_path)
+        self.text = text
+        self.color_bg = (201, 50, 50)
+        self.color_text = (0, 0, 0)
+        self.font = font.SysFont('Comic Sans MS', 20)
     
     def load_image(self,image_path):
         self.image = image.load(image_path)
@@ -15,12 +19,21 @@ class Button:
         self.image = transform.scale(self.image,(width,height))
     
     def draw(self,display,x:int,y:int,width:int,height:int,selected=False):
-        self.resize_image(width,height)
         rect = Rect(x,y,width,height)
-        display.blit(self.image,rect)
+        img_coef = min(width,height)
+        img_size = 0.8*img_coef
+        rect_img = Rect(x+0.1*img_coef,
+                        y+0.1*img_coef,
+                        img_size,
+                        img_size)
+        self.resize_image(img_size,img_size)
+        draw.rect(display,self.color_bg,rect)
+        display.blit(self.image,rect_img)
+        text_surface = self.font.render(self.text, False, self.color_text)
+        display.blit(text_surface,(x+img_coef,y+img_coef*0.1))
         if(selected):
             draw.rect(display,(250,200,200),rect,1)
     
-    def events(self,event,mouse_pos):
+    def events(self,event,mouse_pos,map):
         if(event.type == MOUSEBUTTONUP):
             print("event : button ->",event)

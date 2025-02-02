@@ -9,6 +9,7 @@ class Map:
         self.color_line = (50,140,80)
         self.create_liste()
         self.next_place = None
+        self.selected = None
     
     def move(self,x=0,y=0,width=0,height=0):
         self.x = x
@@ -45,6 +46,11 @@ class Map:
                 self.next_place = None
                 menu.selected = None
             
+            elif(id<self.nx and jd<self.ny and not self.liste[id][jd] is None):
+                self.deselect_all()
+                self.liste[id][jd].events(event,mouse_pos,self)
+                self.selected = self.liste[id][jd]
+            
         elif (event.type == KEYDOWN):
             print(f"event : map[{id},{jd}] ->",event)
             if(event.type == KEYDOWN):
@@ -64,9 +70,6 @@ class Map:
                 self.moves(0,1)
             elif(event.key==1073741906):
                 self.moves(0,-1)
-        
-        if(id<self.nx and jd<self.ny and not self.liste[id][jd] is None):
-            self.liste[id][jd].events(event,mouse_pos,self)
 
     
     
@@ -77,7 +80,8 @@ class Map:
         self.liste[id][jd] = item(x=self.x+id*self.dx,y=self.y+jd*self.dy,width=self.dx,height=self.dy,image=None)
     
     def place_id(self,item,i,j):
-        self.liste[i][j] = item(x=self.x+i*self.dx,y=self.y+j*self.dy,width=self.dx,height=self.dy,image=None)
+        if(i<self.nx and j<self.ny):
+            self.liste[i][j] = item(x=self.x+i*self.dx,y=self.y+j*self.dy,width=self.dx,height=self.dy,image=None)
     
     def place_on_free(self,item):
         looping= True

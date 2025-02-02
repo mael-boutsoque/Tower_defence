@@ -6,7 +6,7 @@ class Upgrade:
     def __init__(self,x:int,y:int,width:int,height:int):
         self.move(x,y,width,height)
         self.color = (255, 204, 0)
-        self.items = [Button(),Button(),Button()]
+        self.items = [Button(text="delete"),Button(text="move"),Button(text="upgrade")]
         self.selected = None
     
     def move(self,x=0,y=0,width=0,height=0):
@@ -21,9 +21,9 @@ class Upgrade:
         for i in range(len(self.items)):
             item = self.items[i]
             item.draw(display,
-                            x = self.x + self.width*0.1,
+                            x = self.x + 5,
                             y = self.y + i*self.height*0.2 + (i+1)*self.height*0.1,
-                            width = self.width*0.8,
+                            width = self.width-10,
                             height = self.height*0.2,
                             selected = self.selected == i)
     
