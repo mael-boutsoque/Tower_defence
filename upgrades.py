@@ -16,16 +16,17 @@ class Upgrade:
         self.height = height
         self.rect = Rect(self.x,self.y,self.width,self.height)
     
-    def draw(self,display):
+    def draw(self,display,activated:bool):
         draw.rect(display,self.color,self.rect)
-        for i in range(len(self.items)):
-            item = self.items[i]
-            item.draw(display,
-                            x = self.x + 5,
-                            y = self.y + i*self.height*0.2 + (i+1)*self.height*0.1,
-                            width = self.width-10,
-                            height = self.height*0.2,
-                            selected = self.selected == i)
+        if(activated):
+            for i in range(len(self.items)):
+                item = self.items[i]
+                item.draw(display,
+                                x = self.x + 5,
+                                y = self.y + i*self.height*0.2 + (i+1)*self.height*0.1,
+                                width = self.width-10,
+                                height = self.height*0.2,
+                                selected = self.selected == i)
     
     def events(self,event,mouse_pos,map):
         if(event.type == MOUSEBUTTONUP):
@@ -39,7 +40,7 @@ class Upgrade:
         
             rect = Rect(x,y,width,height)
             if(rect.collidepoint(mouse_pos)):
-                self.items[i].events(event,mouse_pos)
+                self.items[i].events(event,mouse_pos,map=map)
                 self.selected = i
                 
                 if(event.type == MOUSEBUTTONUP):

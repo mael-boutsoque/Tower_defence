@@ -37,3 +37,10 @@ class Button:
     def events(self,event,mouse_pos,map):
         if(event.type == MOUSEBUTTONUP):
             print("event : button ->",event)
+            if(self.text == "delete"):
+                self.delete(map)
+    
+    
+    def delete(self,map):
+        print("delete")
+        map.delete_selected()

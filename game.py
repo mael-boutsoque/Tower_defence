@@ -53,4 +53,4 @@ class Game():
         self.display.fill((0,0,0))
         self.menu.draw(self.display)
         self.map.draw(self.display)
-        self.upgrade.draw(self.display)
+        self.upgrade.draw(self.display,activated=self.map.selected is not None)

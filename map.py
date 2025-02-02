@@ -10,6 +10,7 @@ class Map:
         self.create_liste()
         self.next_place = None
         self.selected = None
+        self.selected_id = (None,None)
     
     def move(self,x=0,y=0,width=0,height=0):
         self.x = x
@@ -40,7 +41,7 @@ class Map:
         id = int((mouse_pos[0]-self.x)//self.dx)
         jd = int((mouse_pos[1]-self.y)//self.dy)
         if (event.type == MOUSEBUTTONUP):
-            print(f"event : map[{id},{jd}] ->",event)
+            print(f"event : map[{id},{jd}] select{self.selected_id} ->",event)
             if(self.next_place is not None):
                 self.place_id(self.next_place,id,jd)
                 self.next_place = None
@@ -50,6 +51,7 @@ class Map:
                 self.deselect_all()
                 self.liste[id][jd].events(event,mouse_pos,self)
                 self.selected = self.liste[id][jd]
+                self.selected_id = (id,jd)
             
         elif (event.type == KEYDOWN):
             print(f"event : map[{id},{jd}] ->",event)
@@ -137,7 +139,15 @@ class Map:
         return False
     
     def deselect_all(self):
+        self.selected = None
+        self.selected_id = (None,None)
         for i in range(len(self.liste)):
             for j in range(len(self.liste[i])):
                 if self.liste[i][j] is not None:
                     self.liste[i][j].selected = False
+    
+    def delete_selected(self):
+        if self.selected is not None:
+            self.liste[self.selected_id[0]][self.selected_id[1]] = None
+            self.selected = None
+            self.selected_id = (None,None)
