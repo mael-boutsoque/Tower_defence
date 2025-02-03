@@ -86,14 +86,15 @@ class Map:
         self.liste[id][jd] = item(x=self.x+id*self.dx,y=self.y+jd*self.dy,width=self.dx,height=self.dy,image=None)
     
     def place_id(self,item,i,j):
+        item_is_new = type(item) is type
         if(i<self.nx and j<self.ny and self.liste[i][j] is None):
-            if(type(item) is type):
+            if(item_is_new):
                 item = item(x=self.x+i*self.dx,y=self.y+j*self.dy,width=self.dx,height=self.dy,image=None)
                 self.liste[i][j] = item
             else:
                 self.liste[i][j] = item
                 self.liste[i][j].move(self.x+i*self.dx,self.y+j*self.dy)
-        elif(self.next_old_id != (None,None)):
+        elif(self.next_old_id != (None,None) and not item_is_new):
             self.place_id(item,self.next_old_id[0],self.next_old_id[1])
 
     def place_on_free(self,item):
