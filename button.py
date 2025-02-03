@@ -39,8 +39,26 @@ class Button:
             print("event : button ->",event)
             if(self.text == "delete"):
                 self.delete(map)
+            if(self.text == "move"):
+                self.move(map)
+            if(self.text == "upgrade"):
+                self.upgrade(map)
     
     
     def delete(self,map):
         print("delete")
         map.delete_selected()
+    
+    def move(self,map):
+        print("move")
+        if(map.next_place is None):
+            pos = map.get_selected_pos()
+            map.deselect_all()
+            map.next_place = map.liste[pos[0]][pos[1]]
+            map.next_old_id = pos
+            map.liste[pos[0]][pos[1]] = None
+    
+    def upgrade(self,map):
+        print("upgrade")
+        map.upgrade_selected()
+        

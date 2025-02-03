@@ -51,7 +51,7 @@ class Menu:
                 height = self.width*0.8
                 
                 rect = Rect(x,y,width,height)
-                if(rect.collidepoint(mouse_pos)):
+                if(rect.collidepoint(mouse_pos) and map.next_place is None):
                     self.items[i].events_static(event,mouse_pos)
                     map.want_to_place(self.items[i])
                     self.selected = i        

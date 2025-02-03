@@ -9,6 +9,7 @@ class Map:
         self.color_line = (50,140,80)
         self.create_liste()
         self.next_place = None
+        self.next_old_id = (None,None)
         self.selected = None
         self.selected_id = (None,None)
     
@@ -41,7 +42,7 @@ class Map:
         id = int((mouse_pos[0]-self.x)//self.dx)
         jd = int((mouse_pos[1]-self.y)//self.dy)
         if (event.type == MOUSEBUTTONUP):
-            print(f"event : map[{id},{jd}] select{self.selected_id} ->",event)
+            print(f"event : map[{id},{jd}] select{self.selected_id} to_place[{self.next_place}] ->",event)
             if(self.next_place is not None):
                 self.place_id(self.next_place,id,jd)
                 self.next_place = None
@@ -59,6 +60,9 @@ class Map:
                 if(event.key==27):
                     menu.selected = None
                     if(not self.next_place is None):
+                        if(self.next_old_id != (None,None)):
+                            self.place_id(self.next_place,self.next_old_id[0],self.next_old_id[1])
+                            self.next_old_id = (None,None)
                         self.next_place = None
                     else:
                         self.deselect_all()
@@ -82,9 +86,16 @@ class Map:
         self.liste[id][jd] = item(x=self.x+id*self.dx,y=self.y+jd*self.dy,width=self.dx,height=self.dy,image=None)
     
     def place_id(self,item,i,j):
-        if(i<self.nx and j<self.ny):
-            self.liste[i][j] = item(x=self.x+i*self.dx,y=self.y+j*self.dy,width=self.dx,height=self.dy,image=None)
-    
+        if(i<self.nx and j<self.ny and self.liste[i][j] is None):
+            if(type(item) is type):
+                item = item(x=self.x+i*self.dx,y=self.y+j*self.dy,width=self.dx,height=self.dy,image=None)
+                self.liste[i][j] = item
+            else:
+                self.liste[i][j] = item
+                self.liste[i][j].move(self.x+i*self.dx,self.y+j*self.dy)
+        elif(self.next_old_id != (None,None)):
+            self.place_id(item,self.next_old_id[0],self.next_old_id[1])
+
     def place_on_free(self,item):
         looping= True
         for i in range(len(self.liste)):
@@ -151,3 +162,10 @@ class Map:
             self.liste[self.selected_id[0]][self.selected_id[1]] = None
             self.selected = None
             self.selected_id = (None,None)
+    
+    def get_selected_pos(self):
+        return self.selected_id
+    
+    def upgrade_selected(self):
+        if self.selected is not None:
+            self.selected.upgrade()
