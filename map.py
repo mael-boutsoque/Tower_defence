@@ -1,4 +1,7 @@
+from random import randint
 from pygame import KEYDOWN, MOUSEBUTTONUP, draw, Rect
+
+from monster import Monster
 
 class Map:
     def __init__(self,x:int,y:int,width:int,height:int,nx:int,ny:int):
@@ -12,6 +15,7 @@ class Map:
         self.next_old_id = (None,None)
         self.selected = None
         self.selected_id = (None,None)
+        self.monster_timer = 0
     
     def move(self,x=0,y=0,width=0,height=0):
         self.x = x
@@ -27,6 +31,9 @@ class Map:
         for i in range(self.ny):
             self.liste.append([None]*self.nx)
         
+        self.monsters = [[]]*self.ny
+        
+        
     
     def draw(self,display):
         draw.rect(display,self.color,self.rect)
@@ -36,6 +43,10 @@ class Map:
                 
                 if (not self.liste[i][j] is None):
                     self.liste[i][j].draw(display)
+        
+        for i in range(len(self.monsters)):
+            for j in range(len(self.monsters[i])):
+                self.monsters[i][j].draw(display)
                 
     
     def events(self,event,mouse_pos,menu):
@@ -89,7 +100,7 @@ class Map:
         item_is_new = type(item) is type
         if(i<self.nx and j<self.ny and self.liste[i][j] is None):
             if(item_is_new):
-                item = item(x=self.x+i*self.dx,y=self.y+j*self.dy,width=self.dx,height=self.dy,image=None)
+                item = item(x=self.x+i*self.dx,y=self.y+j*self.dy,width=self.dx,height=self.dy)
                 self.liste[i][j] = item
             else:
                 self.liste[i][j] = item
@@ -116,9 +127,19 @@ class Map:
     def __repr__(self):
         return self.___str___()
     
-
     def __getitem__(self,key):
         return self.liste[key]
+    
+    def get_by_pos(self,x,y):
+        id = int((x-self.x)//self.dx)
+        jd = int((y-self.y)//self.dy)
+        if(id<self.nx and jd<self.ny):
+            try:
+                return self.liste[id][jd]
+            except:
+                print("error :",id,jd)
+                raise(IndexError)
+        return None
     
     def moves(self, dx, dy):
         if dx > 0:
@@ -170,3 +191,18 @@ class Map:
     def upgrade_selected(self):
         if self.selected is not None:
             self.selected.upgrade()
+    
+    def add_monster(self,monster,id):
+        self.monsters[id].append(monster)
+    
+    def loop(self):
+        if(self.monster_timer < 100):
+            self.monster_timer += 1
+        else:
+            id = randint(0,len(self.monsters)-1)
+            self.add_monster(Monster(self.width,self.y+id*self.dy,self.dx,self.dy),id)
+            self.monster_timer = 0
+        
+        for i in range(len(self.monsters)):
+            for j in range(len(self.monsters[i])):
+                self.monsters[i][j].loop(self)
