@@ -8,7 +8,7 @@ class Entity:
         self.move(x,y,width,height)
         self.load_image(self.image_path)
         self.selected = False
-        self.level = 0
+        self.level = 1
     
     def move(self,x=0,y=0,width=None,height=None):
         self.x = x
@@ -50,8 +50,11 @@ class Entity:
         print("upgrade",self)
         if(self.level<3):
             self.level += 1
-            self.image_path = f"images\\{Entity.image}{self.level}"+".png"
-            self.load_image(self.image_path)
+            self.change_img_lvl(self.level)
+    
+    def change_img_lvl(self,lvl):
+        self.image_path = f"images\\{Entity.image}{self.level}"+".png"
+        self.load_image(self.image_path)
     
     def ___str___(self):
         return f"Entity[pos = ({self.x},{self.y}) | size = ({self.width},{self.height})]"
