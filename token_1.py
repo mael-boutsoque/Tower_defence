@@ -7,11 +7,13 @@ class Token:
         self.radius = radius
         self.id = id
         self.jd = jd
-        self.move(x,y)
+        self.move(id,jd,x,y)
         if(color is None):
             self.color = (255,0,0)
     
-    def move(self,x=0,y=0):
+    def move(self,id,jd,x,y):
+        self.id = id
+        self.jd = jd
         self.x = x
         self.y = y
         self.rect = Rect(self.x,self.y,self.radius,self.radius)

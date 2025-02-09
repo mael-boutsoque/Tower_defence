@@ -214,3 +214,7 @@ class Map:
     
     def add_token(self,value,i,j):
         self.tokens[i][j].append(Token(value,self.x+(i+0.5)*self.dx,self.y+(j+0.5)*self.dy,10,i,j))
+    
+    def move_token(self,token:Token,i,j):
+        self.tokens[i][j].append(token)
+        token.move(i,j,self.x+(i+0.5)*self.dx,self.y+(j+0.5)*self.dy)

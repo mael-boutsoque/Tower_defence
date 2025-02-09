@@ -13,6 +13,7 @@ class Entity:
         self.token = None
         self.delay0 = 50
         self.delay = self.delay0
+        self.rotation = [1,0]
     
     def move(self,id,jd,x=0,y=0,width=None,height=None):
         self.ids = (id,jd)
@@ -69,14 +70,18 @@ class Entity:
         return self.___str___()
     
     def loop(self,map):
-        print("loop",self)
         if(self.delay>0):
             self.delay -= 1
         else:
             self.delay = self.delay0
-            token = map.take_token(self.ids[0],self.ids[1])
             if(self.token is None):
-                self.token = token
+                token = map.take_token(self.ids[0],self.ids[1])
+                if(token is not None):
+                    self.token = token
+                    print("take token",self)
+                else:
+                    self.delay = 0
             else:
-                self.delay = self.delay0
+                map.move_token(self.token,self.ids[0]+self.rotation[0],self.ids[1]+self.rotation[1])
+                self.token = None
         
