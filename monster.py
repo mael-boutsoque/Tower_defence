@@ -2,11 +2,13 @@ from pygame import Rect, transform, image, draw
 
 class Monster:
     image = "no_texture"
-    def __init__(self,x:int,y:int,width:int,height:int):
+    def __init__(self,x:int,y:int,width:int,height:int,ligne):
         self.move(x,y,width,height)
         self.load_image("images\\"+Monster.image+".png")
+        self.dead = False
         self.hp = 100
         self.speed = 10
+        self.ligne = ligne
 
     def draw(self,display):
         display.blit(self.image,self.rect)
@@ -29,7 +31,7 @@ class Monster:
         pass
     
     def ___str___(self):
-        return f"Entity[pos = ({self.x},{self.y}) | size = ({self.width},{self.height})]"
+        return f"Monster[pos = ({round(self.x)},{round(self.y)}) | size = ({self.width},{self.height})]"
     def __repr__(self):
         return self.___str___()
     
@@ -38,5 +40,8 @@ class Monster:
             self.move(self.x-0.01*self.speed,self.y)
     
     def can_move(self,map):
+        if(self.x<0):
+            self.dead = True
+            return False
         if(map.get_by_pos(self.x,self.y) is None):
             return True

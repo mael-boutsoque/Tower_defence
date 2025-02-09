@@ -1,7 +1,6 @@
 from random import randint
+from token_1 import Token
 from pygame import KEYDOWN, MOUSEBUTTONUP, draw, Rect
-
-from monster import Monster
 
 class Map:
     def __init__(self,x:int,y:int,width:int,height:int,nx:int,ny:int):
@@ -15,7 +14,6 @@ class Map:
         self.next_old_id = (None,None)
         self.selected = None
         self.selected_id = (None,None)
-        self.monster_timer = 0
     
     def move(self,x=0,y=0,width=0,height=0):
         self.x = x
@@ -31,7 +29,14 @@ class Map:
         for i in range(self.ny):
             self.liste.append([None]*self.nx)
         
-        self.monsters = [[]]*self.ny
+        self.tokens = []
+        for i in range(self.ny):
+            new_list = [None]*self.nx
+            for j in range(len(new_list)):
+                new_list[j] = []
+            self.tokens.append(new_list)
+        
+        print(self)
         
         
     
@@ -43,10 +48,10 @@ class Map:
                 
                 if (not self.liste[i][j] is None):
                     self.liste[i][j].draw(display)
-        
-        for i in range(len(self.monsters)):
-            for j in range(len(self.monsters[i])):
-                self.monsters[i][j].draw(display)
+                
+                if(not self.tokens[i][j] is None):
+                    for token in self.tokens[i][j]:
+                        token.draw(display)
                 
     
     def events(self,event,mouse_pos,menu):
@@ -59,11 +64,12 @@ class Map:
                 self.next_place = None
                 menu.selected = None
             
-            elif(id<self.nx and jd<self.ny and not self.liste[id][jd] is None):
+            elif(id<self.nx and jd<self.ny):
                 self.deselect_all()
-                self.liste[id][jd].events(event,mouse_pos,self)
-                self.selected = self.liste[id][jd]
-                self.selected_id = (id,jd)
+                if(not self.liste[id][jd] is None):
+                    self.liste[id][jd].events(event,mouse_pos,self)
+                    self.selected = self.liste[id][jd]
+                    self.selected_id = (id,jd)
             
         elif (event.type == KEYDOWN):
             print(f"event : map[{id},{jd}] ->",event)
@@ -94,17 +100,17 @@ class Map:
         id = int((x-self.x)//self.dx)
         jd = int((y-self.y)//self.dy)
         
-        self.liste[id][jd] = item(x=self.x+id*self.dx,y=self.y+jd*self.dy,width=self.dx,height=self.dy,image=None)
+        self.liste[id][jd] = item(x=self.x+id*self.dx,y=self.y+jd*self.dy,width=self.dx,height=self.dy,id = id,jd = jd)
     
     def place_id(self,item,i,j):
         item_is_new = type(item) is type
         if(i<self.nx and j<self.ny and self.liste[i][j] is None):
             if(item_is_new):
-                item = item(x=self.x+i*self.dx,y=self.y+j*self.dy,width=self.dx,height=self.dy)
+                item = item(x=self.x+i*self.dx,y=self.y+j*self.dy,width=self.dx,height=self.dy,id = i,jd = j)
                 self.liste[i][j] = item
             else:
                 self.liste[i][j] = item
-                self.liste[i][j].move(self.x+i*self.dx,self.y+j*self.dy)
+                self.liste[i][j].move(i,j,self.x+i*self.dx,self.y+j*self.dy)
         elif(self.next_old_id != (None,None) and not item_is_new):
             self.place_id(item,self.next_old_id[0],self.next_old_id[1])
 
@@ -122,7 +128,10 @@ class Map:
     def ___str___(self):
         string = ""
         for i in range(len(self.liste)):
-            string += self.liste[i].__str__()+"\n"
+            string += self.liste[i].__str__()+"n\n"
+        string += "\n"
+        for ligne in self.tokens:
+            string += ligne.__str__()+"n\n"
         return string
     def __repr__(self):
         return self.___str___()
@@ -192,17 +201,16 @@ class Map:
         if self.selected is not None:
             self.selected.upgrade()
     
-    def add_monster(self,monster,id):
-        self.monsters[id].append(monster)
-    
     def loop(self):
-        if(self.monster_timer < 100):
-            self.monster_timer += 1
-        else:
-            id = randint(0,len(self.monsters)-1)
-            self.add_monster(Monster(self.width,self.y+id*self.dy,self.dx,self.dy),id)
-            self.monster_timer = 0
-        
-        for i in range(len(self.monsters)):
-            for j in range(len(self.monsters[i])):
-                self.monsters[i][j].loop(self)
+        for i in range(len(self.liste)):
+            for j in range(len(self.liste[i])):
+                if(not self.liste[i][j] is None):
+                    self.liste[i][j].loop(self)
+    
+    def take_token(self,i,j) -> Token:
+        if(len(self.tokens[i][j])>0):
+            return self.tokens[i][j].pop()
+        return None
+    
+    def add_token(self,value,i,j):
+        self.tokens[i][j].append(Token(value,self.x+(i+0.5)*self.dx,self.y+(j+0.5)*self.dy,10,i,j))

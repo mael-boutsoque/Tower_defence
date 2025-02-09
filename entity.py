@@ -2,15 +2,20 @@ from pygame import MOUSEBUTTONUP, Rect, image, transform, draw
 
 class Entity:
     image = "no_texture"
-    def __init__(self,x:int,y:int,width:int,height:int,image=None):
+    def __init__(self,x:int,y:int,width:int,height:int,id:int,jd:int,image=None):
         if(image is None):
             self.image_path = "images\\"+Entity.image+".png"
-        self.move(x,y,width,height)
+        self.move(id,jd,x,y,width,height)
         self.load_image(self.image_path)
         self.selected = False
         self.level = 1
+        self.ids = (id,jd)
+        self.token = None
+        self.delay0 = 50
+        self.delay = self.delay0
     
-    def move(self,x=0,y=0,width=None,height=None):
+    def move(self,id,jd,x=0,y=0,width=None,height=None):
+        self.ids = (id,jd)
         self.x = x
         self.y = y
         self.width = width or self.width
@@ -28,6 +33,8 @@ class Entity:
         display.blit(self.image,self.rect)
         if(self.selected):
             draw.rect(display,(250,200,200),self.rect,1)
+        if(self.token is not None):
+            draw.rect(display,(0,200,0),self.rect,2)
     
     @staticmethod
     def draw_item(display,x:int,y:int,width:int,height:int,selected=False):
@@ -57,6 +64,19 @@ class Entity:
         self.load_image(self.image_path)
     
     def ___str___(self):
-        return f"Entity[pos = ({self.x},{self.y}) | size = ({self.width},{self.height})]"
+        return f"Entity(x{self.x},y{self.y},i{self.ids[0]},j{self.ids[1]}|{self.token})"
     def __repr__(self):
         return self.___str___()
+    
+    def loop(self,map):
+        print("loop",self)
+        if(self.delay>0):
+            self.delay -= 1
+        else:
+            self.delay = self.delay0
+            token = map.take_token(self.ids[0],self.ids[1])
+            if(self.token is None):
+                self.token = token
+            else:
+                self.delay = self.delay0
+        

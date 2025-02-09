@@ -37,7 +37,8 @@ class Menu:
         if(event.type == KEYDOWN):
             if(event.key==27):
                 self.selected = None
-                map.next_place = None
+                if(map.next_old_id != (None,None)):
+                    map.next_place = None
         if(event.type == MOUSEWHEEL):
             print("event : menu scroll ->",event.y)
             if(self.scroll + event.y * 10 <= 0 and self.scroll + event.y * 10 > self.height - (len(self.items)+1)*(self.width*0.9)):

@@ -3,10 +3,12 @@ from pygame import Rect, image, transform, draw
 
 
 class Tour_archer(Entity):
-    def __init__(self, x:int,y:int,width:int,height:int):
+    def __init__(self, x:int,y:int,width:int,height:int,id:int,jd:int):
         self.image_path = "images\\"+"\\Towers\\Archer\\archer_level_1.png"
-        super().__init__(x, y, width, height, self.image_path)
+        super().__init__(x, y, width, height ,id,jd, self.image_path)
         self.hp = 100
+        self.shoot_timer0 = 50
+        self.shoot_timer = 0
     
     def change_img_lvl(self,lvl):
         self.image_path = "images\\"+"\\Towers\\Archer\\archer_level_"+str(self.level)+".png"
@@ -19,3 +21,6 @@ class Tour_archer(Entity):
         display.blit(Image,Rect(x,y,width,height))
         if(selected):
             draw.rect(display,(250,200,200),Rect(x,y,width,height),1)
+    
+    def loop(self,map):
+        pass

@@ -25,6 +25,7 @@ class Game():
         self.upgrade = Upgrade(self.width-menuwidth,self.height*0.6,menuwidth,self.height*0.4)
         self.map = Map(0,0,self.width-menuwidth,self.height,10,10)
         self.map.place_new(Entity,100,100)
+        self.map.add_token(1,4,2)
         self.loop()
     
     
@@ -44,6 +45,8 @@ class Game():
             
             if event.type == pygame.KEYDOWN:
                 print(event.key)
+                if event.key == 109:
+                    print(self.map)
             
             mouse_pos = pygame.mouse.get_pos()
             if(self.menu.rect.collidepoint(mouse_pos)):

@@ -3,9 +3,9 @@ from pygame import Rect, image, transform, draw
 
 
 class Tour_mage(Entity):
-    def __init__(self, x:int,y:int,width:int,height:int):
+    def __init__(self, x:int,y:int,width:int,height:int,id:int,jd:int):
         self.image_path = "images\\"+"\\Towers\\Wizard\\wizard_level_1.png"
-        super().__init__(x, y, width, height, self.image_path)
+        super().__init__(x, y, width, height ,id,jd, self.image_path)
         self.hp = 100
     
     def change_img_lvl(self,lvl):
