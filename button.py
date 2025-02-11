@@ -2,7 +2,7 @@ from pygame import MOUSEBUTTONUP, Rect, transform, image, draw, font
 
 
 class Button:
-    image = "no_texture.png"
+    image = "Entity.png"
     def __init__(self,image=None,text:str=""):
         if(image is None):
             self.image_path = "images\\"+Button.image

@@ -2,7 +2,7 @@ from pygame import Rect, draw
 
 
 class Token:
-    def __init__(self, value:int, x:int, y:int, radius:int, id, jd,color=None):
+    def __init__(self, value:int, x:int, y:int, id, jd, radius = 14,color=None):
         self.value = value
         self.radius = radius
         self.id = id
@@ -26,4 +26,3 @@ class Token:
         return f"Token(x{self.x},y{self.y}|i{self.id},j{self.jd}|{self.value})"
     def __repr__(self):
         return self.___str___()
-

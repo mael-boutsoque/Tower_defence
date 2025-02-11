@@ -1,19 +1,26 @@
 from pygame import MOUSEBUTTONUP, Rect, image, transform, draw
 
 class Entity:
-    image = "no_texture"
-    def __init__(self,x:int,y:int,width:int,height:int,id:int,jd:int,image=None):
-        if(image is None):
-            self.image_path = "images\\"+Entity.image+".png"
+    def __init__(self,x:int,y:int,width:int,height:int,id:int,jd:int):
+        self.image_path = self.get_image_path()
         self.move(id,jd,x,y,width,height)
         self.load_image(self.image_path)
         self.selected = False
         self.level = 1
         self.ids = (id,jd)
         self.token = None
-        self.delay0 = 50
-        self.delay = self.delay0
+        self.pick_delay0 = 50
+        self.pick_delay = self.pick_delay0
+        self.spit_delay0 = 50
+        self.spit_delay = self.spit_delay0
         self.rotation = [1,0]
+    
+    @classmethod
+    def get_image_path(cls,lvl=0)->str:
+        if(lvl==0):
+            return "images\\"+cls.__name__+".png"
+        else:
+            return "images\\"+cls.__name__+str(lvl)+".png"
     
     def move(self,id,jd,x=0,y=0,width=None,height=None):
         self.ids = (id,jd)
@@ -28,7 +35,7 @@ class Entity:
         try:
             self.image = transform.scale(image.load(image_path),(self.width,self.height))
         except:
-            self.image = transform.scale(image.load("images\\"+Entity.image+".png"),(self.width,self.height))
+            self.image = transform.scale(image.load(Entity.get_image_path()),(self.width,self.height))
     
     def draw(self,display):
         display.blit(self.image,self.rect)
@@ -37,9 +44,9 @@ class Entity:
         if(self.token is not None):
             draw.rect(display,(0,200,0),self.rect,2)
     
-    @staticmethod
-    def draw_item(display,x:int,y:int,width:int,height:int,selected=False):
-        image_path = "images\\"+Entity.image+".png"
+    @classmethod
+    def draw_item(cls,display,x:int,y:int,width:int,height:int,selected=False):
+        image_path = cls.get_image_path()
         Image = transform.scale(image.load(image_path),(width,height))
         display.blit(Image,Rect(x,y,width,height))
         if(selected):
@@ -61,7 +68,7 @@ class Entity:
             self.change_img_lvl(self.level)
     
     def change_img_lvl(self,lvl):
-        self.image_path = f"images\\{Entity.image}{self.level}"+".png"
+        self.image_path = self.get_image_path(lvl)
         self.load_image(self.image_path)
     
     def ___str___(self):
@@ -70,18 +77,33 @@ class Entity:
         return self.___str___()
     
     def loop(self,map):
-        if(self.delay>0):
-            self.delay -= 1
+        pass
+    
+    # %% PICK AND SPIT TOKEN
+    def pick_test(self,map):
+        if(self.pick_delay>0):
+            self.pick_delay -= 1
         else:
-            self.delay = self.delay0
-            if(self.token is None):
-                token = map.take_token(self.ids[0],self.ids[1])
-                if(token is not None):
-                    self.token = token
-                    print("take token",self)
-                else:
-                    self.delay = 0
+            self.pick_delay = self.pick_delay0
+            self.pick_token(map)
+    
+    def spit_test(self,map):
+        if(self.spit_delay>0):
+            self.spit_delay -= 1
+        else:
+            self.spit_delay = self.spit_delay0
+            self.spit_token(map)
+    
+    def spit_token(self,map):
+        if(self.token is not None):
+            map.move_token(self.token,self.ids[0]+self.rotation[0],self.ids[1]+self.rotation[1])
+            self.token = None
+    
+    def pick_token(self,map):
+        if(self.token is None):
+            token = map.take_token(self.ids[0],self.ids[1])
+            if(token is not None):
+                self.token = token
+                print("take token",self)
             else:
-                map.move_token(self.token,self.ids[0]+self.rotation[0],self.ids[1]+self.rotation[1])
-                self.token = None
-        
+                self.pick_delay = 0

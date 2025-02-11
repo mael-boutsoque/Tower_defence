@@ -213,8 +213,8 @@ class Map:
         return None
     
     def add_token(self,value,i,j):
-        self.tokens[i][j].append(Token(value,self.x+(i+0.5)*self.dx,self.y+(j+0.5)*self.dy,10,i,j))
+        self.tokens[i][j].append(Token(value,self.x+(i+0.4)*self.dx,self.y+(j+0.4)*self.dy,i,j))
     
     def move_token(self,token:Token,i,j):
         self.tokens[i][j].append(token)
-        token.move(i,j,self.x+(i+0.5)*self.dx,self.y+(j+0.5)*self.dy)
+        token.move(i,j,self.x+(i+0.4)*self.dx,self.y+(j+0.4)*self.dy)
