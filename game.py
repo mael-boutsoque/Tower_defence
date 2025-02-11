@@ -2,10 +2,8 @@ import pygame
 from map import Map
 from menu import Menu
 from entity import Entity
-from tour_archer import Tour_archer
-from tour_barbar import Tour_barbar
-from tour_mage import Tour_mage
 from upgrades import Upgrade
+from entities import *
 
 class Game():
     def __init__(self, width, height):
@@ -21,7 +19,7 @@ class Game():
     
     def run(self):
         menuwidth = min(140,self.width*0.2)
-        self.menu = Menu(self.width-menuwidth,0,menuwidth,self.height*0.6,[Tour_mage,Tour_barbar,Tour_archer,Entity])
+        self.menu = Menu(self.width-menuwidth,0,menuwidth,self.height*0.6,[Entity,Generator])
         self.upgrade = Upgrade(self.width-menuwidth,self.height*0.6,menuwidth,self.height*0.4)
         self.map = Map(0,0,self.width-menuwidth,self.height,10,10)
         self.map.place_new(Entity,100,100)
