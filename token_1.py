@@ -22,6 +22,9 @@ class Token:
         draw.circle(display,self.color,(self.x+self.radius/2,self.y+self.radius/2),self.radius)
         draw.circle(display,(255,255,255),(self.x+self.radius/2,self.y+self.radius/2),self.radius,width=1)
     
+    def get_value(self)->int:
+        return self.value
+    
     def ___str___(self):
         return f"Token(x{self.x},y{self.y}|i{self.id},j{self.jd}|{self.value})"
     def __repr__(self):

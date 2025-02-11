@@ -43,6 +43,11 @@ class Entity:
             draw.rect(display,(250,200,200),self.rect,1)
         if(self.token is not None):
             draw.rect(display,(0,200,0),self.rect,2)
+        self.draw_token(display)
+    
+    def draw_token(self,display):
+        if(self.token is not None):
+            self.token.draw(display)
     
     @classmethod
     def draw_item(cls,display,x:int,y:int,width:int,height:int,selected=False):
