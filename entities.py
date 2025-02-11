@@ -7,6 +7,9 @@ class Generator(Entity):
         self.delay0 = 200
         self.delay = self.delay0
     
+    def upgrade_func(self):
+        self.delay0 -= 12
+    
     def loop(self,map):
         if(self.delay>0):
             self.delay -= 1
@@ -20,6 +23,11 @@ class Seller(Entity):
     def __init__(self,x:int,y:int,width:int,height:int,id:int,jd:int):
         super().__init__(x,y,width,height,id,jd)
         self.pick_delay0 = 20
+        self.spit_delay0 = 50
+    
+    def upgrade_func(self):
+        self.pick_delay0 = max(self.pick_delay0-2,1)
+        self.spit_delay0 = max(self.spit_delay0-2,1)
     
     def sell_token(self):
         if(self.token is not None):

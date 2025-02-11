@@ -1,6 +1,7 @@
 from pygame import MOUSEBUTTONUP, Rect, image, transform, draw
 
 class Entity:
+    color = {0:(0, 153, 0),1:(0, 204, 102),2:(0, 153, 153),3:(0, 102, 204),4:(0, 0, 255),5:(102, 0, 255),6:(204, 0, 255),7:(204, 0, 153),8:(204, 0, 102),9:(255, 0, 0),10:(255, 153, 0)}
     def __init__(self,x:int,y:int,width:int,height:int,id:int,jd:int):
         self.image_path = self.get_image_path()
         self.move(id,jd,x,y,width,height)
@@ -14,6 +15,7 @@ class Entity:
         self.spit_delay0 = 50
         self.spit_delay = self.spit_delay0
         self.rotation = [1,0]
+        self.bg_color = Entity.color[0]
     
     @classmethod
     def get_image_path(cls,lvl=0)->str:
@@ -28,7 +30,7 @@ class Entity:
         self.y = y
         self.width = width or self.width
         self.height = height or self.height
-        self.rect = Rect(self.x,self.y,self.width,self.height)
+        self.rect = Rect(self.x+1,self.y+1,self.width-2,self.height-2)
     
     def load_image(self,image_path):
         print("load image",image_path)
@@ -38,6 +40,7 @@ class Entity:
             self.image = transform.scale(image.load(Entity.get_image_path()),(self.width,self.height))
     
     def draw(self,display):
+        draw.rect(display,self.bg_color,self.rect)
         display.blit(self.image,self.rect)
         if(self.selected):
             draw.rect(display,(250,200,200),self.rect,1)
@@ -67,14 +70,14 @@ class Entity:
             self.selected = not self.selected
     
     def upgrade(self):
-        print("upgrade",self)
-        if(self.level<3):
+        if(self.level<10):
+            print("upgrade",self)
             self.level += 1
-            self.change_img_lvl(self.level)
+            self.bg_color = Entity.color[self.level]
+            self.upgrade_func()
     
-    def change_img_lvl(self,lvl):
-        self.image_path = self.get_image_path(lvl)
-        self.load_image(self.image_path)
+    def upgrade_func(self):
+        pass
     
     def ___str___(self):
         return f"Entity(x{self.x},y{self.y},i{self.ids[0]},j{self.ids[1]}|{self.token})"
