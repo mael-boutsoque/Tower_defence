@@ -1,6 +1,17 @@
 from entity import Entity
 from token_1 import Token
 
+class Entity_non_oriented(Entity):
+    def __init__(self, x, y, width, height, id, jd):
+        super().__init__(x, y, width, height, id, jd)
+        self.rotation = [0,0]
+    
+    def draw_rotation(self,display):
+        pass
+    def rotate(self,direction):
+        pass
+
+
 class Generator(Entity):
     def __init__(self,x:int,y:int,width:int,height:int,id:int,jd:int):
         super().__init__(x,y,width,height,id,jd)
@@ -19,7 +30,7 @@ class Generator(Entity):
             self.spit_token(map)
 
 
-class Seller(Entity):
+class Seller(Entity_non_oriented):
     def __init__(self,x:int,y:int,width:int,height:int,id:int,jd:int):
         super().__init__(x,y,width,height,id,jd)
         self.pick_delay0 = 20

@@ -95,7 +95,7 @@ class Entity:
         draw.circle(display,(255,255,255),(self.x+(self.width/2)*(1+0.95*self.rotation[0]),self.y+(self.height/2)*(1+0.95*self.rotation[1])),2)
     
     def rotate(self,direction):
-        self.angle += 1
+        self.angle += direction
         self.rotation = [int(cos(self.angle*pi/2)),int(sin(self.angle*pi/2))]
         print("RATATE",direction)
     
