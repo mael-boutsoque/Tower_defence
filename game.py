@@ -39,6 +39,7 @@ class Game():
             if event.type == pygame.QUIT:# or (event.type == pygame.KEYDOWN and event.key==27):
                 self.running = False
             
+            #debbug
             if event.type == pygame.KEYDOWN:
                 print(event.key)
                 if event.key == 109:
