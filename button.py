@@ -35,14 +35,19 @@ class Button:
             draw.rect(display,(250,200,200),rect,1)
     
     def events(self,event,mouse_pos,map):
-        if(event.type == MOUSEBUTTONUP):
+        if(event.type == MOUSEBUTTONUP and (event.button == 1 or event.button == 3)):
             print("event : button ->",event)
             if(self.text == "delete"):
                 self.delete(map)
-            if(self.text == "move"):
+            elif(self.text == "move"):
                 self.move(map)
-            if(self.text == "upgrade"):
+            elif(self.text == "upgrade"):
                 self.upgrade(map)
+            elif(self.text == "rotate"):
+                if(event.button == 1):
+                    self.rotate(map,direction=1)
+                else:
+                    self.rotate(map,direction=-1)
     
     
     def delete(self,map):
@@ -54,11 +59,18 @@ class Button:
         if(map.next_place is None):
             pos = map.get_selected_pos()
             map.deselect_all()
-            map.next_place = map.liste[pos[0]][pos[1]]
-            map.next_old_id = pos
-            map.liste[pos[0]][pos[1]] = None
+            try:
+                map.next_place = map.liste[pos[0]][pos[1]]
+                map.next_old_id = pos
+                map.liste[pos[0]][pos[1]] = None
+            except:
+                pass
     
     def upgrade(self,map):
         print("upgrade")
         map.upgrade_selected()
+    
+    def rotate(self,map,direction):
+        print("rotate")
+        map.rotate_selected(direction)
         

@@ -1,4 +1,5 @@
 from pygame import MOUSEBUTTONUP, Rect, image, transform, draw
+from numpy import cos, sin, pi
 
 class Entity:
     color = {0:(0, 153, 0),1:(0, 204, 102),2:(0, 153, 153),3:(0, 102, 204),4:(0, 0, 255),5:(102, 0, 255),6:(204, 0, 255),7:(204, 0, 153),8:(204, 0, 102),9:(255, 0, 0),10:(255, 153, 0)}
@@ -15,6 +16,7 @@ class Entity:
         self.spit_delay0 = 50
         self.spit_delay = self.spit_delay0
         self.rotation = [1,0]
+        self.angle = 0
         self.bg_color = Entity.color[0]
     
     @classmethod
@@ -47,6 +49,7 @@ class Entity:
         if(self.token is not None):
             draw.rect(display,(0,200,0),self.rect,2)
         self.draw_token(display)
+        self.draw_rotation(display)
     
     def draw_token(self,display):
         if(self.token is not None):
@@ -87,6 +90,15 @@ class Entity:
     def loop(self,map):
         pass
     
+    # %% ROTATION
+    def draw_rotation(self,display):
+        draw.circle(display,(255,255,255),(self.x+(self.width/2)*(1+0.95*self.rotation[0]),self.y+(self.height/2)*(1+0.95*self.rotation[1])),2)
+    
+    def rotate(self,direction):
+        self.angle += 1
+        self.rotation = [int(cos(self.angle*pi/2)),int(sin(self.angle*pi/2))]
+        print("RATATE",direction)
+    
     # %% PICK AND SPIT TOKEN
     def pick_test(self,map):
         if(self.pick_delay>0):
@@ -112,6 +124,5 @@ class Entity:
             token = map.take_token(self.ids[0],self.ids[1])
             if(token is not None):
                 self.token = token
-                print("take token",self)
             else:
                 self.pick_delay = 0

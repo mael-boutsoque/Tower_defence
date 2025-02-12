@@ -36,8 +36,6 @@ class Map:
                 new_list[j] = []
             self.tokens.append(new_list)
         
-        print(self)
-        
         
     
     def draw(self,display):
@@ -200,6 +198,10 @@ class Map:
     def upgrade_selected(self):
         if self.selected is not None:
             self.selected.upgrade()
+    
+    def rotate_selected(self,direction):
+        if self.selected is not None:
+            self.selected.rotate(direction)
     
     def loop(self):
         for i in range(len(self.liste)):

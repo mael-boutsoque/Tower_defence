@@ -49,11 +49,32 @@ class Adder(Entity):
     def __init__(self,x:int,y:int,width:int,height:int,id:int,jd:int):
         super().__init__(x,y,width,height,id,jd)
         self.pick_delay0 = 20
-        self.add_value = 1
+        self.add_value = 2
+    
+    def upgrade_func(self):
+        self.add_value += 3
     
     def spit_token(self, map):
         if(self.token is not None):
             self.token.value += self.add_value
+        super().spit_token(map)
+    
+    def loop(self,map):
+        self.pick_test(map)
+        self.spit_test(map)
+
+class Multiplier(Entity):
+    def __init__(self,x:int,y:int,width:int,height:int,id:int,jd:int):
+        super().__init__(x,y,width,height,id,jd)
+        self.pick_delay0 = 20
+        self.mult_value = 2
+    
+    def upgrade_func(self):
+        self.mult_value += 1
+    
+    def spit_token(self, map):
+        if(self.token is not None):
+            self.token.value = self.token.value*self.mult_value
         super().spit_token(map)
     
     def loop(self,map):
