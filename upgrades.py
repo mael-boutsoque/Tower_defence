@@ -16,16 +16,27 @@ class Upgrade:
         self.height = height
         self.rect = Rect(self.x,self.y,self.width,self.height)
     
+    def get_button_pos(self,i:int):
+        '''
+        return -> (x,y,width,height)
+        '''
+        x = self.x + 5
+        y = self.y + i*self.height*0.15 + (i+1)*self.height*0.06
+        width = self.width-10
+        height = self.height*0.2
+        return (x,y,width,height)
+    
     def draw(self,display,activated:bool):
         draw.rect(display,self.color,self.rect)
         if(activated):
             for i in range(len(self.items)):
                 item = self.items[i]
+                button_pos = self.get_button_pos(i)
                 item.draw(display,
-                                x = self.x + 5,
-                                y = self.y + i*self.height*0.15 + (i+1)*self.height*0.06,
-                                width = self.width-10,
-                                height = self.height*0.2,
+                                button_pos[0],
+                                button_pos[1],
+                                button_pos[2],
+                                button_pos[3],
                                 selected = self.selected == i)
     
     def events(self,event,mouse_pos,map):
@@ -33,12 +44,9 @@ class Upgrade:
             print("event : upgrade menu ->",event)
     
         for i in range(len(self.items)):
-            x = self.x + 5
-            y = self.y + i*self.height*0.15 + (i+1)*self.height*0.06
-            width = self.width*0.8
-            height = self.height*0.2
+            button_pos = self.get_button_pos(i)
         
-            rect = Rect(x,y,width,height)
+            rect = Rect(button_pos[0],button_pos[1],button_pos[2],button_pos[3])
             if(rect.collidepoint(mouse_pos)):
                 self.items[i].events(event,mouse_pos,map=map)
                 self.selected = i

@@ -46,12 +46,12 @@ class Game():
                     print(self.map)
             
             mouse_pos = pygame.mouse.get_pos()
-            if(self.menu.rect.collidepoint(mouse_pos)):
+            if(self.upgrade.rect.collidepoint(mouse_pos)):
+                self.upgrade.events(event,mouse_pos,map=self.map)
+            elif(self.menu.rect.collidepoint(mouse_pos)):
                 self.menu.events(event,mouse_pos,map=self.map)
             elif(self.map.rect.collidepoint(mouse_pos)):
                 self.map.events(event,mouse_pos,menu=self.menu)
-            elif(self.upgrade.rect.collidepoint(mouse_pos)):
-                self.upgrade.events(event,mouse_pos,map=self.map)
     
     def draw(self):
         self.display.fill((0,0,0))
