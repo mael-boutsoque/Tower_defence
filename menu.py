@@ -41,8 +41,8 @@ class Menu:
                     map.next_place = None
         if(event.type == MOUSEWHEEL):
             print("event : menu scroll ->",event.y)
-            if(self.scroll + event.y * 10 <= 0 and self.scroll + event.y * 10 > self.height - (len(self.items)+1)*(self.width*0.9)):
-                self.scroll += event.y * 10
+            if((self.scroll + event.y * self.height // 5 <= 0 and event.y>0) or (self.scroll + event.y * self.height // 5 > self.height - (len(self.items)+1)*(self.width*0.9) and event.y<0)):
+                self.scroll += event.y * self.height // 4
         
         elif(event.type == MOUSEBUTTONUP and (event.button!=4 and event.button!=5)):
             for i in range(len(self.items)):

@@ -20,9 +20,13 @@ class Map:
         self.y = y
         self.width = width
         self.height = height
+        # force the map to be a square
+        box_size = min(self.width/self.nx,self.height/self.ny)
+        self.dx = box_size
+        self.dy = box_size
+        self.width = self.dx*self.nx
+        self.height = self.dy*self.ny
         self.rect = Rect(self.x,self.y,self.width,self.height)
-        self.dx = self.width/self.nx
-        self.dy = self.height/self.ny
     
     def create_liste(self):
         self.liste = []
